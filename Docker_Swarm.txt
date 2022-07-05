@@ -1,0 +1,38 @@
+NO MANAGER
+docker swarm init --advertise-addr [ip]
+
+docker swarm join-token worker
+
+docker swarm join-token manager
+
+docker node ls
+
+docker node rm [id]
+docker service create -p 8080:3000 aluracursos/barbearia
+/var/lib/docker/swarm
+
+docker node ls --format "{{.Hostname}} {{.ManagerStatus}}"
+
+docker service ps ContainerID
+
+docker service ps ContainerID --format "{{.Node}}"
+
+NO WORKER
+docker swarm leave
+docker container run -p 8080:3000 -d aluracursos/barbearia
+
+Portas são compartilhadas entre nós do swarm e são acessíveis a partir de qualquer nó graças ao routing mesh
+
+Link: https://docs.docker.com/engine/swarm/manage-nodes/
+
+removemos um nó manager do swarm a partir de outro manager. Quais os procedimentos que devemos executar para realizar essa remoção?
+
+- Devemos primeiramente rebaixar o cargo do nó com o comando docker node demote e depois removê-lo com o comando docker node rm.
+
+RESTRINGINDO NÓS
+Remover serviços através dos IDs
+docker service rm $(docker service ls -q)
+
+docker node update --availability drain NÓQUEDEVERÁSERATUALIZADO [O nó ficará indisponível para executar tarefas.]
+
+docker node update --constraint-add node.role==worker IDDOSERVICO [aplicar restrições em serviços]
