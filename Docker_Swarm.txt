@@ -36,3 +36,17 @@ docker service rm $(docker service ls -q)
 docker node update --availability drain NÓQUEDEVERÁSERATUALIZADO [O nó ficará indisponível para executar tarefas.]
 
 docker node update --constraint-add node.role==worker IDDOSERVICO [aplicar restrições em serviços]
+
+SERVIÇOS REPLICADOS
+Serviços replicados podem rodar em apenas um nó E Serviços por padrão são criados no modo replicado.
+image.png
+
+Vamos supor que temos um serviço com id ci10k3u7q6ti
+
+docker service update --replicas 5 ci10k3u7q6ti OU docker service scale ci10k3u7q6ti=5
+
+SERVIÇOS GLOBAIS
+Serviços que são críticos à aplicação como um todo podem e devem ser executados como globais para que todos os nós possam ser devidamente monitorados e estejam seguros.
+
+docker service create -p 8080:3000 --mode global aluracursos/barbearia
+
