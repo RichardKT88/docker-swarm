@@ -50,3 +50,23 @@ Serviços que são críticos à aplicação como um todo podem e devem ser execu
 
 docker service create -p 8080:3000 --mode global aluracursos/barbearia
 
+A REDE INGRESS
+A rede ingress e vimos que, além de ser a rede padrão criada pelo Docker Swarm para os nós que fazem parte do cluster, ela utiliza o driver overlay
+    - O driver overlay comunica seus dados de maneira criptografada para garantir nossa segurança.
+    - O driver overlay permite a comunicação entre diferentes hosts de um mesmo cluster.
+
+SERVICE DISCOVERY
+docker service create --name servico --replicas 2 alpine sleep 1d
+manager ==> docker exec -it servico.2.p8iorhvbf7sw5ai0xyv sh  
+worker3 ==> docker exec -it servico.1.orf159lc7gamuzjl3807r311b sh === 
+
+USER-DEFINED OVERLAY
+docker network create -d overlay my_overlay
+docker service create --name servico --network my_overlay --replicas 2 alpine sleep 1d
+ - User-Defined Overlay são criadas de maneira lazy para workers.
+ - Serviços que utilizam redes customizadas conseguem descobrir outros serviços diretamente por nome.
+
+Podemos conectar containers em escopo local criados com o comando docker container run em redes criadas com esse driver.
+Para isso, basta no momento da criação da rede utilizarmos a flag --attachable:
+docker network create -d overlay --attachable my_overlay
+Com o comando acima, conseguiremos conectar tanto serviços como containers "standalone" em nossa rede my_overlay.
